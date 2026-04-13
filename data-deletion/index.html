@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Deletion | Connektly</title>
+    <meta
+      name="description"
+      content="Connektly's data deletion page explaining how workspace admins can request deletion, timelines, verification, and residual retention windows."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="/connektly-favicon.png" />
+    <link rel="apple-touch-icon" href="/connektly-favicon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pages.css" />
+  </head>
+  <body class="subpage" data-page="data-deletion">
+    <div class="announcement-bar">
+      <p>Deletion requests are reviewed by support and account verification teams.</p>
+    </div>
+
+    <div data-site-header></div>
+
+    <main class="page-main">
+      <section class="page-hero">
+
+        <h1>How to request account and workspace deletion.</h1>
+        <p class="page-hero__lede">
+          This page explains who can request deletion, what information is
+          removed, what may remain temporarily for operational reasons, and
+          how long the process usually takes after verification.
+        </p>
+        <div class="page-hero__actions">
+          <a class="button" href="#request-path">See the process</a>
+          <a class="button button--ghost" href="mailto:support@connektly.in">Email Support</a>
+        </div>
+      </section>
+
+      <section class="doc-shell">
+        <div class="doc-content">
+          <div class="doc-section" id="request-path">
+            <h2>The deletion path from request to confirmation</h2>
+            <p>
+              To protect customer records and prevent unauthorized deletion,
+              we verify requester identity before removing workspace data.
+            </p>
+            <ol class="doc-list">
+              <li><strong>Step 1: Submit the request.</strong> Send the request from the workspace owner or admin email address tied to the account.</li>
+              <li><strong>Step 2: Verify authority.</strong> We confirm workspace ownership, identity, and whether any export or billing tasks are still pending.</li>
+              <li><strong>Step 3: Process deletion.</strong> Workspace data is queued for removal, access is restricted, and associated records move into the deletion workflow.</li>
+              <li><strong>Step 4: Send confirmation.</strong> We confirm completion and note any residual data that may remain in backup or finance systems temporarily.</li>
+            </ol>
+          </div>
+
+          <div class="doc-section" id="what-delete">
+            <h2>What is normally removed from an approved deletion request</h2>
+            <ul class="doc-list">
+              <li><strong>Workspace records:</strong> Inbox data, CRM records, notes, tags, automation settings, campaign history, and team assignments.</li>
+              <li><strong>User access:</strong> Workspace access, role mappings, and related sign-in connections tied to that workspace.</li>
+              <li><strong>Support context:</strong> Workspace-linked troubleshooting artifacts that are no longer needed after the request is completed.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section" id="what-remains">
+            <h2>What may remain for a limited period</h2>
+            <p>
+              Some information may remain temporarily where required to keep
+              systems stable, detect fraud, or satisfy financial and legal
+              obligations.
+            </p>
+            <ul class="doc-list">
+              <li>Backup copies that expire on a rolling operational schedule.</li>
+              <li>Invoice, payment, tax, and accounting records needed for financial compliance.</li>
+              <li>Minimal security logs required to investigate abuse, fraud, or service incidents.</li>
+            </ul>
+            <div class="doc-note">
+              Residual records are retained only for the period needed for
+              those specific obligations and are not restored to active
+              workspace access after deletion is completed.
+            </div>
+          </div>
+
+          <div class="doc-section" id="before-submit">
+            <h2>What to do before asking us to delete a workspace</h2>
+            <ul class="doc-list">
+              <li>Export contacts, conversations, invoices, or reports your team may need later.</li>
+              <li>Disconnect any integrations or automations that should stop sending or receiving data.</li>
+              <li>Confirm whether the request is for a single workspace, a specific user, or the entire account.</li>
+              <li>Make sure the requester is the workspace owner or an admin we can verify quickly.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section" id="request-template">
+            <h2>What to include in the deletion request</h2>
+            <p>Including the right details helps us verify and process the request without delay.</p>
+            <div class="request-template">Subject: Workspace deletion request
+
+Workspace name:
+Registered owner email:
+Requested action:
+Scope of deletion:
+Preferred confirmation contact:
+Any export needed before deletion: Yes / No
+Billing or invoice concerns to resolve first:</div>
+          </div>
+
+          <div class="doc-section" id="after-request">
+            <h2>What happens once the workflow begins</h2>
+            <p>
+              Once verified, we may restrict access while the request is in
+              progress, notify the requester about outstanding billing or
+              export issues, and send a completion confirmation when the
+              primary deletion workflow is done.
+            </p>
+            <div class="doc-meta">
+              Privacy-related questions can also be reviewed on
+              <a href="/privacy-policy">Privacy Policy</a>.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="/site-layout.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>

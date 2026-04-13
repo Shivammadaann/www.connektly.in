@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us | Connektly</title>
+    <meta
+      name="description"
+      content="Get in touch with Connektly to learn how our platform can turbocharge your WhatsApp communications."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="/connektly-favicon.png" />
+    <link rel="apple-touch-icon" href="/connektly-favicon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pages.css" />
+    <style>
+      .contact-showcase {
+        width: min(calc(100% - 2rem), var(--max-width));
+        margin: 0 auto;
+        padding: 3rem 0 6rem;
+      }
+      .contact-grid {
+        display: grid;
+        grid-template-columns: minmax(300px, 450px) minmax(0, 1fr);
+        gap: clamp(2rem, 5vw, 4rem);
+        align-items: start;
+      }
+      .contact-details {
+        background: #04120b;
+        color: #fff;
+        padding: 3rem;
+        border-radius: 2.5rem;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+      }
+      .contact-details::before {
+        content: "";
+        position: absolute;
+        bottom: -50px;
+        right: -50px;
+        width: 250px;
+        height: 250px;
+        background: rgba(24, 191, 99, 0.2);
+        filter: blur(40px);
+        border-radius: 50%;
+        z-index: 0;
+      }
+      .contact-details > * {
+        position: relative;
+        z-index: 1;
+      }
+      .contact-details h2 {
+        font-family: "Sora", sans-serif;
+        font-size: 2.2rem;
+        margin: 0 0 1rem;
+        line-height: 1.1;
+      }
+      .contact-details p {
+        color: #a0b3a9;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin: 0 0 2.5rem;
+      }
+      .cd-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .cd-item__icon {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .cd-item__icon img {
+        width: 1.5rem;
+        height: auto;
+        filter: brightness(0) invert(1);
+      }
+      .cd-item__text small {
+        display: block;
+        color: #6a8276;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+      }
+      .cd-item__text strong {
+        display: block;
+        font-size: 1.2rem;
+        font-family: "Sora", sans-serif;
+      }
+      .contact-form__wrapper {
+        background: #ffffff;
+        padding: 3rem;
+        border-radius: 2.5rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(19, 54, 41, 0.06);
+      }
+      .contact-form__wrapper h3 {
+        font-family: "Sora", sans-serif;
+        font-size: 1.6rem;
+        margin: 0 0 2rem;
+      }
+      @media (max-width: 900px) {
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body class="subpage" data-page="contact">
+    <div class="announcement-bar">
+      <p>We typically respond to inquiries within 2 hours during business hours.</p>
+    </div>
+
+    <div data-site-header></div>
+
+    <main class="page-main reveal">
+      <section class="page-hero">
+
+        <h1>Get in touch</h1>
+        <p class="page-hero__lede">
+          Have questions about pricing, features, or integrations? Our team is ready to help you orchestrate your customer messaging seamlessly.
+        </p>
+      </section>
+
+      <section class="contact-showcase">
+        <div class="contact-grid">
+          
+          <aside class="contact-details reveal reveal-delay-1">
+            <h2>Let's Talk.</h2>
+            <p>Tell us how you're using WhatsApp today and we'll show you how Connektly can multiply your output.</p>
+            
+            <div class="cd-item">
+              <div class="cd-item__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #18bf63;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </div>
+              <div class="cd-item__text">
+                <small>Email</small>
+                <strong>support@connektly.in</strong>
+              </div>
+            </div>
+
+            <div class="cd-item">
+              <div class="cd-item__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #18bf63;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <div class="cd-item__text">
+                <small>Phone</small>
+                <strong>+1 (289) 907-0610</strong>
+              </div>
+            </div>
+
+            <div class="cd-item">
+              <div class="cd-item__icon">
+                <img src="/Social%20Media%20Icons/WhatsApp.svg" alt="WhatsApp Icon" />
+              </div>
+              <div class="cd-item__text">
+                <small>Direct Message</small>
+                <a href="https://wa.me/12899070610" target="_blank" rel="noopener noreferrer" style="color: inherit;">
+                  <strong>Chat with Support</strong>
+                </a>
+              </div>
+            </div>
+          </aside>
+
+          <div class="contact-form__wrapper reveal reveal-delay-2">
+            <h3>Send us a message</h3>
+            <form class="contact-form" id="contact-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+              <div class="form-split-row">
+                <label>
+                  <span>First Name</span>
+                  <input type="text" name="name" placeholder="John" required />
+                </label>
+                <label>
+                  <span>Last Name</span>
+                  <input type="text" name="lastName" placeholder="Doe" required />
+                </label>
+              </div>
+
+              <label>
+                <span>Working Email</span>
+                <input type="email" name="email" placeholder="john@company.com" required />
+              </label>
+
+              <label>
+                <span>Topic of Inquiry</span>
+                <select name="topic" required style="width:100%; padding: 0.95rem 1.2rem; border-radius: 999px; border: 1px solid rgba(19, 54, 41, 0.16); background: rgba(255, 255, 255, 0.6); font-family: inherit; margin-top: 0.5rem; outline: none; transition: border-color 180ms ease;">
+                  <option value="" disabled selected>Select a topic...</option>
+                  <option value="sales">Sales & Pricing</option>
+                  <option value="support">Technical Support</option>
+                  <option value="billing">Billing Inquiry</option>
+                  <option value="partnership">Partnership Request</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Message</span>
+                <textarea
+                  name="message"
+                  rows="5"
+                  placeholder="How can our team help?"
+                  required
+                ></textarea>
+              </label>
+
+              <button class="button contact-form__submit" type="submit" style="width: 100%; min-height: 3.5rem; margin-top: 0.5rem;">Send Message</button>
+              <p class="contact-form__status" id="form-status" role="status" aria-live="polite" style="text-align: center; font-weight: 700; color: #18bf63; margin-top: 1rem;"></p>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="/site-layout.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>

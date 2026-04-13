@@ -1,0 +1,241 @@
+/* Features Page Specialized CSS */
+
+.features-showcase {
+  background: #060907;
+  padding: 5rem 0;
+  color: #fff;
+}
+
+.features-showcase__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.features-showcase__header h2 {
+  font-family: "Sora", sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0;
+  color: #fff;
+}
+
+.features-showcase__header p {
+  color: #18bf63;
+  margin-top: 0.5rem;
+  font-weight: 700;
+}
+
+.fc-container {
+  width: min(calc(100% - 2rem), var(--max-width));
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.fc {
+  background: #232825;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2.5rem;
+  padding: 3rem;
+  display: flex;
+  align-items: stretch;
+  gap: 3rem;
+  position: relative;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.fc:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 50px 120px rgba(0, 0, 0, 0.45), 0 0 0 2px rgba(24, 191, 99, 0.4);
+}
+
+.fc__tag {
+  position: absolute;
+  top: -1rem;
+  left: 3rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-family: "Sora", sans-serif;
+  color: #fff;
+  background: #25da7b;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.fc__tag--marketing {
+  background: #2c7ef8;
+}
+
+.fc__tag--ecommerce {
+  background: #c3b900;
+}
+
+.fc__tag--partners {
+  background: #62cfad;
+}
+
+.fc__image-col {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.fc__image-col img {
+  max-width: 100%;
+  max-height: 380px;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.fc__text-col {
+  flex: 1;
+  background: #ffffff;
+  color: #0c1a14;
+  border-radius: 2.5rem;
+  padding: 4rem 2.5rem 3rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.fc__title {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #18bf63;
+  color: #ffffff;
+  padding: 0.8rem 2rem;
+  border-radius: 999px;
+  font-family: "Sora", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 10px 20px rgba(24, 191, 99, 0.3);
+  width: max-content;
+  max-width: 95%;
+}
+
+.fc__text-col p {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #4a5c53;
+}
+
+.fc--flip {
+  flex-direction: row-reverse;
+}
+
+.fc--flip .fc__tag {
+  left: auto;
+  right: 3rem;
+}
+
+.fc__partner-logos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.partner-logo-box {
+  background: #026aea;
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.partner-logo-box--whatsapp {
+  background: #18bf63;
+}
+
+.partner-logo-box img {
+  height: 2.5rem;
+  width: auto;
+  box-shadow: none;
+}
+
+.features-cta {
+  background: #0a4627;
+  border-radius: 999px;
+  max-width: 900px;
+  margin: 6rem auto 2rem;
+  padding: 3rem 4rem;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.features-cta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.4);
+}
+
+.features-cta h3 {
+  font-family: "Sora", sans-serif;
+  color: #fff;
+  font-size: 1.8rem;
+  margin: 0 0 2rem;
+}
+
+.features-cta__actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.features-cta__actions .button {
+  background: #ffffff;
+  color: #0c1a14;
+}
+
+.features-cta__actions .button--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255,255,255,0.4);
+}
+
+@media (max-width: 1080px) {
+  .fc {
+    flex-direction: column;
+    padding-top: 4rem;
+  }
+  
+  .fc--flip {
+    flex-direction: column;
+  }
+  
+  .fc__tag {
+    top: -1rem;
+    left: 2rem;
+    right: auto;
+  }
+  
+  .fc__title {
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+@media (max-width: 760px) {
+  .features-showcase {
+    padding: 3rem 0;
+  }
+  
+  .features-cta {
+    border-radius: 2rem;
+    padding: 2rem;
+  }
+  
+  .features-cta__actions {
+    flex-direction: column;
+  }
+}

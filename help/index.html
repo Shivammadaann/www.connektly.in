@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help Center | Connektly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/connektly-favicon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pages.css" />
+    <style>
+      .help-hero {
+        background: #0d1c15;
+        padding: 6rem 2rem;
+        text-align: center;
+        border-radius: 0 0 40px 40px;
+        margin-bottom: 4rem;
+        color: #fff;
+      }
+      .help-hero h1 {
+        font-family: "Sora", sans-serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        margin: 0 0 1rem;
+      }
+      .help-hero p {
+        font-size: 1.2rem;
+        color: #25da7b;
+      }
+      .search-bar {
+        max-width: 600px;
+        margin: 2rem auto 0;
+        position: relative;
+      }
+      .search-bar input {
+        width: 100%;
+        padding: 1.2rem 2rem;
+        border-radius: 999px;
+        border: none;
+        font-size: 1.1rem;
+        background: #fff;
+        color: #0c1a14;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        outline: none;
+      }
+      .search-bar input:focus {
+        outline: 3px solid rgba(24, 191, 99, 0.4);
+      }
+      .help-grid {
+        width: min(calc(100% - 2rem), 1200px);
+        margin: 0 auto 6rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+      .category-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 2.5rem 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+      }
+      .category-card h2 {
+        font-family: "Sora", sans-serif;
+        font-size: 1.4rem;
+        margin: 0 0 0.5rem;
+      }
+      .category-card > p {
+        color: var(--muted);
+        margin: 0 0 1.5rem;
+        font-size: 0.95rem;
+      }
+      .article-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .article-list li {
+        margin-bottom: 0.8rem;
+      }
+      .article-list a {
+        display: block;
+        padding: 0.5rem 0;
+        color: var(--green-deep);
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 1px solid var(--line);
+        transition: color 180ms ease;
+      }
+      .article-list a:hover {
+        color: var(--green);
+      }
+      
+      .search-results-overlay {
+        display: none;
+        position: absolute;
+        top: calc(100% + 1rem);
+        left: 0; right: 0;
+        background: #fff;
+        border-radius: 1.5rem;
+        padding: 1rem;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        text-align: left;
+        max-height: 400px;
+        overflow-y: auto;
+        z-index: 100;
+      }
+      .search-results-overlay.is-active {
+        display: block;
+      }
+      .search-item {
+        display: block;
+        padding: 1rem;
+        border-radius: 1rem;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .search-item:hover {
+        background: #f1fff7;
+      }
+      .search-item strong {
+        display: block;
+        color: var(--green-deep);
+        font-size: 1.1rem;
+      }
+      .search-item span {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body class="subpage" data-page="help">
+    <div data-site-header></div>
+
+    <main class="page-main">
+      <header class="help-hero">
+
+        <h1>Let's get you the answers you need.</h1>
+        <p>Search effectively across our entire knowledge base.</p>
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Search for articles, guides, or keywords..." autocomplete="off" />
+          <div class="search-results-overlay" id="search-results"></div>
+        </div>
+      </header>
+
+      <div class="help-grid">
+        <article class="category-card" id="cat-overview">
+          <h2>Connektly Overview</h2>
+          <p>Get to know Connektly!</p>
+          <ul class="article-list"></ul>
+        </article>
+        
+        <article class="category-card" id="cat-started">
+          <h2>Get Started</h2>
+          <p>Step-by-step guidance to set up and start using Connektly.</p>
+          <ul class="article-list"></ul>
+        </article>
+        
+        <article class="category-card" id="cat-connect">
+          <h2>Connect Your Number</h2>
+          <p>Instructions to link your WhatsApp number to Connektly.</p>
+          <ul class="article-list"></ul>
+        </article>
+
+        <article class="category-card" id="cat-privacy">
+          <h2>Privacy & Security</h2>
+          <p>Learn how Connektly keeps your data safe and compliant.</p>
+          <ul class="article-list"></ul>
+        </article>
+      </div>
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="/site-layout.js"></script>
+    <script>
+      let allArticles = [];
+
+      async function loadHelpCenter() {
+        try {
+          const res = await fetch("/api/help");
+          allArticles = await res.json();
+          renderCategories();
+        } catch (err) {
+          console.error("Failed fetching help articles", err);
+        }
+      }
+
+      function renderCategories() {
+        const categories = {
+          "Connektly Overview": document.querySelector("#cat-overview .article-list"),
+          "Get Started": document.querySelector("#cat-started .article-list"),
+          "Connect Your Number": document.querySelector("#cat-connect .article-list"),
+          "Privacy & Security": document.querySelector("#cat-privacy .article-list")
+        };
+
+        allArticles.forEach(article => {
+          if (categories[article.category]) {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="/help/article.html?id=${article.id}">${article.title} &rarr;</a>`;
+            categories[article.category].appendChild(li);
+          }
+        });
+      }
+
+      const searchInput = document.getElementById('search-input');
+      const searchResults = document.getElementById('search-results');
+
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        searchResults.innerHTML = '';
+        
+        if (query.trim() === '') {
+          searchResults.classList.remove('is-active');
+          return;
+        }
+
+        const hits = allArticles.filter(a => 
+          a.title.toLowerCase().includes(query) || 
+          a.excerpt.toLowerCase().includes(query) ||
+          a.content.toLowerCase().includes(query)
+        );
+
+        if (hits.length === 0) {
+          searchResults.innerHTML = '<div style="padding: 1rem; color: #666;">No valid articles found.</div>';
+        } else {
+          searchResults.innerHTML = hits.map(hit => `
+            <a href="/help/article.html?id=${hit.id}" class="search-item">
+              <strong>${hit.title}</strong>
+              <span>${hit.category}</span>
+            </a>
+          `).join('');
+        }
+        
+        searchResults.classList.add('is-active');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-bar')) {
+          searchResults.classList.remove('is-active');
+        }
+      });
+
+      loadHelpCenter();
+    </script>
+  </body>
+</html>

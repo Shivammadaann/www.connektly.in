@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help Article | Connektly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/connektly-favicon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pages.css" />
+    <style>
+      .article-layout {
+        max-width: 1200px;
+        margin: 4rem auto 6rem;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 4rem;
+        align-items: start;
+      }
+      .post-content {
+        line-height: 1.8;
+        font-size: 1.15rem;
+        color: rgba(9, 19, 13, 0.88);
+      }
+      .post-content h2, .post-content h3 {
+        font-family: "Sora", sans-serif;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        scroll-margin-top: 100px;
+      }
+      .toc-sidebar {
+        position: sticky;
+        top: 120px;
+        background: #f9fbfb;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 2rem;
+      }
+      .toc-sidebar h4 {
+        margin: 0 0 1rem;
+        font-family: "Sora", sans-serif;
+        font-size: 1.1rem;
+      }
+      .toc-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .toc-list li {
+        margin-bottom: 0.75rem;
+      }
+      .toc-list a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: color 150ms ease;
+      }
+      .toc-list a:hover {
+        color: var(--green-deep);
+        font-weight: 600;
+      }
+      @media (max-width: 900px) {
+        .article-layout {
+          grid-template-columns: 1fr;
+        }
+        .toc-sidebar {
+          position: static;
+          order: -1;
+        }
+      }
+    </style>
+  </head>
+  <body class="subpage" data-page="help">
+    <div data-site-header></div>
+
+    <main class="page-main">
+      <div id="article-loader" style="text-align: center; padding: 6rem; color: var(--muted); font-weight: 600;">Opening article...</div>
+      
+      <div class="article-layout" id="article-layout" style="display: none;">
+        <article class="reveal is-visible">
+          <p class="page-breadcrumb" style="margin-bottom: 2rem;"><a href="/help" style="font-weight: 700; color: var(--green);">&larr; Back to Help Center</a></p>
+          <div style="color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem; font-weight: 800; margin-bottom: 0.5rem;" id="a-cat"></div>
+          <h1 style="font-family: 'Sora', sans-serif; font-size: clamp(2.2rem, 4vw, 3.2rem); margin: 0 0 2rem; line-height: 1.1;" id="a-title"></h1>
+          
+          <div class="post-content" id="a-content"></div>
+        </article>
+
+        <aside class="toc-sidebar">
+          <h4>On this page</h4>
+          <ul class="toc-list" id="toc-list">
+            <!-- TOC injected here automatically -->
+          </ul>
+        </aside>
+      </div>
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="/site-layout.js"></script>
+    <script>
+      async function loadArticle() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        
+        if (!id) {
+          document.getElementById('article-loader').innerHTML = `Article not found. <a href="/help">Go back</a>`;
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/help/${id}`);
+          if (!res.ok) throw new Error("Not found");
+          const article = await res.json();
+          
+          document.title = `${article.title} | Connektly Support`;
+          
+          // Render data
+          document.getElementById('a-cat').innerText = article.category;
+          document.getElementById('a-title').innerText = article.title;
+          
+          const contentDiv = document.getElementById('a-content');
+          contentDiv.innerHTML = article.content;
+          
+          // Check if user manually inserted a TOC via TinyMCE
+          const hasManualTOC = contentDiv.querySelector('.mce-toc');
+          const tocSidebarDiv = document.querySelector('.toc-sidebar');
+          const headings = contentDiv.querySelectorAll('h2, h3');
+          const tocList = document.getElementById('toc-list');
+          
+          if (hasManualTOC) {
+            tocSidebarDiv.style.display = 'none'; // Hide sidebar, rely on inline table
+            
+            // Still need to assign IDs to headers if TinyMCE didn't do it perfectly so jumps work
+            headings.forEach((heading, index) => {
+              if(!heading.id) heading.id = `section-${index}`;
+            });
+            
+          } else {
+            // Auto generation
+            if (headings.length === 0) {
+              tocList.innerHTML = '<li><span style="color:#aaa;">No sections</span></li>';
+            } else {
+              headings.forEach((heading, index) => {
+                const anchorId = `section-${index}`;
+                heading.id = anchorId;
+                
+                const isH3 = heading.tagName.toLowerCase() === 'h3';
+                
+                const li = document.createElement('li');
+                li.style.marginLeft = isH3 ? '1.5rem' : '0';
+                li.innerHTML = `<a href="#${anchorId}">${heading.innerText}</a>`;
+                tocList.appendChild(li);
+              });
+            }
+          }
+
+          document.getElementById('article-loader').style.display = 'none';
+          document.getElementById('article-layout').style.display = 'grid';
+
+        } catch(err) {
+          document.getElementById('article-loader').innerHTML = `Failed to load article. <a href="/help">Go back</a>`;
+        }
+      }
+      
+      loadArticle();
+    </script>
+  </body>
+</html>

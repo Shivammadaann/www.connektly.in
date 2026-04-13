@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book a Demo | Connektly</title>
+    <meta
+      name="description"
+      content="Book a free personalized demo of Connektly and see how it simplifies communicating using WhatsApp."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="/connektly-favicon.png" />
+    <link rel="apple-touch-icon" href="/connektly-favicon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pages.css" />
+  </head>
+  <body class="subpage" data-page="book-demo">
+    <div class="announcement-bar">
+      <p>Schedule a guided tour with an expert today.</p>
+    </div>
+
+    <div data-site-header></div>
+
+    <main class="page-main">
+      <section class="contact section section--bright" style="margin-top: 4rem; padding-bottom: 3rem;">
+        <div class="contact__grid">
+          <article class="contact__card reveal" style="background: transparent; border: none; box-shadow: none; padding: 1rem 0;">
+            <span class="eyebrow" style="color: rgba(4, 18, 11, 0.72);">Live Walkthrough</span>
+            <h1 style="font-family: 'Sora', sans-serif; font-size: clamp(1.875rem, 3.37vw, 2.85rem); line-height: 1.05; letter-spacing: -0.04em; margin-top: 0.8rem; color: #04120b;">
+              Book your free demo
+            </h1>
+            <p style="font-size: 1.15rem; line-height: 1.65; color: rgba(4, 18, 11, 0.82); margin-top: 1.5rem; max-width: 90%;">
+              We really encourage you to see how Connektly lets you use WhatsApp and other Business tools as a communication channel to sell, market and support more efficiently.
+            </p>
+            <ul style="list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 1.25rem;">
+              <li style="display: flex; gap: 0.85rem; align-items: flex-start; color: rgba(4, 18, 11, 0.9); font-weight: 600; font-size: 1.05rem;">
+                <span class="status-dot" style="margin-top: 0.4rem; flex-shrink: 0; background: #04120b; box-shadow: 0 0 0 0.28rem rgba(4, 18, 11, 0.16);"></span>
+                Enjoy a personalized guided tour, not a group webinar
+              </li>
+              <li style="display: flex; gap: 0.85rem; align-items: flex-start; color: rgba(4, 18, 11, 0.9); font-weight: 600; font-size: 1.05rem;">
+                <span class="status-dot" style="margin-top: 0.4rem; flex-shrink: 0; background: #04120b; box-shadow: 0 0 0 0.28rem rgba(4, 18, 11, 0.16);"></span>
+                Demos are given by experts on using Connektly's live environment
+              </li>
+              <li style="display: flex; gap: 0.85rem; align-items: flex-start; color: rgba(4, 18, 11, 0.9); font-weight: 600; font-size: 1.05rem;">
+                <span class="status-dot" style="margin-top: 0.4rem; flex-shrink: 0; background: #04120b; box-shadow: 0 0 0 0.28rem rgba(4, 18, 11, 0.16);"></span>
+                See how Connektly simplifies communicating using WhatsApp
+              </li>
+              <li style="display: flex; gap: 0.85rem; align-items: flex-start; color: rgba(4, 18, 11, 0.9); font-weight: 600; font-size: 1.05rem;">
+                <span class="status-dot" style="margin-top: 0.4rem; flex-shrink: 0; background: #04120b; box-shadow: 0 0 0 0.28rem rgba(4, 18, 11, 0.16);"></span>
+                We’ll show you how Connektly helps you to grow your business
+              </li>
+            </ul>
+          </article>
+
+          <form class="contact-form reveal" id="contact-form" style="align-self: center;">
+            <label style="grid-column: 1 / -1;">
+              <span>Name</span>
+              <input type="text" name="name" placeholder="Your full name" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" placeholder="Your work email" required />
+            </label>
+            <label>
+              <span>WhatsApp Number</span>
+              <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required />
+            </label>
+            <label style="grid-column: 1 / -1;">
+              <span>Which team or function will primarily use Connektly?*</span>
+              <select name="team" required>
+                <option value="" disabled selected>Select an option...</option>
+                <option value="marketing">Marketing</option>
+                <option value="sales">Sales</option>
+                <option value="support">Support</option>
+                <option value="admin">Admin/Founder/Business Owner</option>
+                <option value="it">IT/Developer/Product Manager</option>
+                <option value="hr">HR</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            
+            <label class="checkbox-label" style="grid-column: 1 / -1; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+              <input type="checkbox" name="consent" required />
+              By signing up, you agree to the Terms & Conditions and Privacy Policy, and consent to receive marketing communications from Connektly Solutions.
+            </label>
+
+            <button class="button contact-form__submit" type="submit">Schedule Demo</button>
+            <p class="contact-form__status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="/site-layout.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>

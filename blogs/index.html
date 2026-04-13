@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogs | Connektly</title>
+    <meta name="description" content="Discover product updates, best practices, and insights from Connektly." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/connektly-favicon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pages.css" />
+    <style>
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      .blog-card {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 2rem;
+        background: #ffffff;
+        box-shadow: 0 16px 36px rgba(24, 60, 47, 0.05);
+        transition: transform 180ms ease, box-shadow 180ms ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .blog-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 56px rgba(24, 191, 99, 0.12);
+      }
+      .blog-card__date {
+        font-size: 0.85rem;
+        color: var(--green-deep);
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .blog-card h3 {
+        font-family: "Sora", sans-serif;
+        font-size: 1.4rem;
+        margin: 0 0 1rem;
+        line-height: 1.25;
+        color: var(--surface-strong);
+      }
+      .blog-card p {
+        color: var(--muted);
+        line-height: 1.6;
+        margin: 0 0 1.5rem;
+        flex-grow: 1;
+      }
+      .blog-card a {
+        display: inline-block;
+        font-weight: 700;
+        color: var(--green);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 2px;
+        text-decoration-color: transparent;
+        transition: text-decoration-color 180ms ease;
+      }
+      .blog-card:hover a {
+        text-decoration-color: var(--green);
+      }
+      .loader {
+        text-align: center;
+        padding: 4rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body class="subpage" data-page="blogs">
+    <div class="announcement-bar">
+      <p>Read the latest insights and product updates from the team.</p>
+    </div>
+
+    <div data-site-header></div>
+
+    <main class="page-main">
+      <section class="page-hero">
+
+        <h1>Latest Insights</h1>
+        <p class="page-hero__lede">
+          Tips, strategies, and updates to help you communicate better and grow your customer relationships over WhatsApp.
+        </p>
+      </section>
+
+      <section class="doc-shell" style="width: min(calc(100% - 2rem), 1100px); max-width: none;">
+        <div id="blog-container" class="loader">Loading blogs...</div>
+      </section>
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="/site-layout.js"></script>
+    <script>
+      async function loadBlogs() {
+        const container = document.getElementById("blog-container");
+        try {
+          const res = await fetch("/api/blogs");
+          if (!res.ok) throw new Error("Could not fetch blogs");
+          const blogs = await res.json();
+          
+          if (blogs.length === 0) {
+            container.innerHTML = "<p>No blogs published yet.</p>";
+            container.className = "loader";
+            return;
+          }
+
+          const html = blogs.map(blog => {
+            const dateStr = new Date(blog.date).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
+            const imgEl = blog.coverImage ? `<img src="${blog.coverImage}" alt="${blog.title}" style="width: calc(100% + 4rem); margin: -2rem -2rem 1.5rem; max-height: 200px; object-fit: cover; display: block;" />` : '';
+            return `
+              <article class="blog-card reveal is-visible" style="overflow: hidden;">
+                ${imgEl}
+                <span class="blog-card__date">${dateStr}</span>
+                <h3>${blog.title}</h3>
+                <p>${blog.excerpt}</p>
+                <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+                  <a href="/blogs/post.html?id=${blog.id}">Read full article &rarr;</a>
+                  <small style="color: var(--muted); font-weight: 600;">By ${blog.author}</small>
+                </div>
+              </article>
+            `;
+          }).join("");
+
+          container.innerHTML = html;
+          container.className = "blog-grid";
+        } catch (err) {
+          console.error(err);
+          container.innerHTML = "Error loading blogs. Please make sure the local server is running.";
+        }
+      }
+      loadBlogs();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,219 @@
+body.subpage {
+  background: #ffffff;
+}
+
+.page-main {
+  padding-bottom: 4rem;
+}
+
+/* Base Hero */
+.page-hero {
+  width: min(calc(100% - 2rem), 900px);
+  margin: 0 auto;
+  padding: 4rem 0 2rem;
+  text-align: center;
+}
+
+.page-breadcrumb {
+  margin: 0 0 1rem;
+  color: rgba(19, 54, 41, 0.6);
+  font-size: 0.95rem;
+}
+
+.page-breadcrumb a {
+  color: var(--green-deep);
+  font-weight: 700;
+}
+
+.page-hero h1 {
+  margin: 0.5rem auto 0;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.875rem, 3.75vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.page-hero__lede {
+  max-width: 65ch;
+  margin: 1.5rem auto 0;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.page-hero__actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Document Container */
+.doc-shell {
+  width: min(calc(100% - 2rem), 800px);
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.doc-section {
+  margin-bottom: 3rem;
+}
+
+.doc-section h2 {
+  font-family: "Sora", sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+  color: var(--text);
+}
+
+.doc-section h3 {
+  font-family: "Sora", sans-serif;
+  font-size: 1.25rem;
+  margin: 1.5rem 0 0.75rem;
+  color: var(--text);
+}
+
+.doc-section p, 
+.doc-section li {
+  color: var(--muted);
+  line-height: 1.75;
+  font-size: 1.05rem;
+}
+
+.doc-section p {
+  margin-bottom: 1.25rem;
+}
+
+.doc-list {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.doc-list li + li {
+  margin-top: 0.5rem;
+}
+
+.doc-note,
+.request-template {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-soft);
+  border-left: 4px solid var(--green);
+  border-radius: 0 12px 12px 0;
+}
+
+.request-template {
+  font-family: Consolas, "Courier New", monospace;
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  overflow-x: auto;
+}
+
+.doc-meta {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.doc-meta a {
+  color: var(--green-deep);
+  font-weight: 700;
+}
+
+/* FAQ Accordions */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: box-shadow 180ms ease;
+}
+
+.faq-item:hover {
+  box-shadow: 0 12px 24px rgba(19, 54, 41, 0.05);
+}
+
+.faq-toggle {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.faq-item__title {
+  font-family: "Sora", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.faq-toggle::after {
+  content: "+";
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--green-deep);
+  transition: transform 180ms ease;
+}
+
+.faq-item.is-open .faq-toggle::after {
+  content: "−";
+}
+
+.faq-item__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 250ms ease;
+}
+
+.faq-item__panel > div {
+  overflow: hidden;
+}
+
+.faq-item__panel p {
+  margin: 0;
+  padding: 0 1.5rem 1.5rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.faq-item.is-open .faq-item__panel {
+  grid-template-rows: 1fr;
+}
+
+@media (max-width: 760px) {
+  .page-hero {
+    padding-top: 2rem;
+  }
+  .page-hero h1 {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+  .page-hero__actions .button {
+    width: 100%;
+  }
+}
+
+/* Global Form Row Stacking */
+.form-split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .form-split-row {
+    grid-template-columns: 1fr;
+  }
+}

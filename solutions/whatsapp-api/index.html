@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp Business API | Connektly Solutions</title>
+    <meta
+      name="description"
+      content="Scale your messaging infrastructure instantly with Connektly and the official WhatsApp Business API."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="/connektly-favicon.png" />
+    <link rel="apple-touch-icon" href="/connektly-favicon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pages.css" />
+    <style>
+      :root {
+        --api-brand: #25d366; /* Vibrant WhatsApp official green */
+        --api-bg: #090e0b;
+        --api-accent: #0f1c15;
+      }
+      
+      .api-hero {
+        background: var(--api-bg);
+        color: #fff;
+        padding: 8rem 0 6rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .api-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        height: 100%;
+        background: radial-gradient(circle at top, rgba(37, 211, 102, 0.15) 0%, transparent 60%);
+        pointer-events: none;
+      }
+
+      .api-hero__inner {
+        width: min(calc(100% - 2rem), var(--max-width));
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .api-hero__content h1 {
+        font-family: "Sora", sans-serif;
+        font-size: clamp(2.1rem, 3.75vw, 3.37rem);
+        line-height: 1.05;
+        margin: 1.5rem 0;
+        letter-spacing: -0.04em;
+        background: linear-gradient(135deg, #fff 0%, #aab2af 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .api-hero__content p {
+        font-size: 1.2rem;
+        color: #a4b3ab;
+        line-height: 1.7;
+        margin-bottom: 2.5rem;
+        max-width: 90%;
+      }
+
+      .api-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(37, 211, 102, 0.1);
+        border: 1px solid rgba(37, 211, 102, 0.2);
+        padding: 0.6rem 1.2rem;
+        border-radius: 999px;
+        color: var(--api-brand);
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .api-visual {
+        position: relative;
+      }
+
+      .code-window {
+        background: var(--api-accent);
+        border-radius: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        overflow: hidden;
+      }
+
+      .code-window__header {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1rem 1.5rem;
+        display: flex;
+        gap: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .code-window__header span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #fc605c;
+      }
+      .code-window__header span:nth-child(2) { background: #fdbc40; }
+      .code-window__header span:nth-child(3) { background: #34c849; }
+
+      .code-window__body {
+        padding: 2rem;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #a0aebf;
+        overflow-x: auto;
+      }
+      
+      .kw-green { color: #25d366; }
+      .kw-blue { color: #5bc0eb; }
+      .kw-pink { color: #e55982; }
+
+      .api-grid-section {
+        padding: 8rem 0;
+        background: #ffffff;
+      }
+
+      .api-grid {
+        width: min(calc(100% - 2rem), var(--max-width));
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+
+      .api-card {
+        background: #f4f7f5;
+        padding: 3rem 2rem;
+        border-radius: 1.5rem;
+        transition: transform 300ms ease, box-shadow 300ms ease;
+      }
+
+      .api-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(19, 54, 41, 0.06);
+      }
+
+      .api-card__icon {
+        width: 4rem;
+        height: 4rem;
+        background: #ffffff;
+        border-radius: 1rem;
+        display: grid;
+        place-items: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+      }
+
+      .api-card h3 {
+        font-family: "Sora", sans-serif;
+        font-size: 1.4rem;
+        color: #04120b;
+        margin-bottom: 1rem;
+      }
+
+      .api-card p {
+        color: rgba(4, 18, 11, 0.7);
+        line-height: 1.7;
+      }
+
+      @media (max-width: 1024px) {
+        .api-hero__inner { grid-template-columns: 1fr; }
+        .api-grid { grid-template-columns: 1fr; }
+        .api-hero { padding: 6rem 0 4rem; }
+      }
+
+      /* Comparison Block Styles */
+      .vs-section {
+        padding: 5rem 0 8rem;
+        background: #fdfdfd;
+        border-top: 1px solid rgba(0,0,0,0.05);
+      }
+      .vs-container {
+        width: min(calc(100% - 2rem), var(--max-width));
+        margin: 0 auto;
+      }
+      .vs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin-top: 4rem;
+      }
+      .vs-card {
+        padding: 3rem;
+        border-radius: 2rem;
+        border: 1px solid rgba(0,0,0,0.05);
+      }
+      .vs-card--app {
+        background: #fffcfb;
+        border-color: #fce6df;
+        box-shadow: 0 20px 40px rgba(235, 75, 56, 0.04);
+      }
+      .vs-card--api {
+        background: #f1fff7;
+        border-color: #c7e8d5;
+        box-shadow: 0 20px 40px rgba(37, 211, 102, 0.08);
+      }
+      .vs-card__header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+      .vs-card__header img { width: 3rem; }
+      .vs-card h3 { font-family: "Sora", sans-serif; font-size: 1.6rem; color: #04120b; margin: 0; }
+      .vs-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.8rem; }
+      .vs-list li { display: flex; align-items: flex-start; gap: 1rem; font-size: 1.05rem; line-height: 1.5; color: #3b4e44; }
+      .vs-list li svg { flex-shrink: 0; margin-top: 0.15rem; }
+      .vs-list li strong { display: block; font-family: "Sora", sans-serif; font-size: 1.15rem; color: #04120b; margin-bottom: 0.35rem; }
+      .app-cross { color: #f25c54; }
+      .api-check { color: #25d366; }
+      
+      .api-badge-float {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        background: #fff;
+        color: #000;
+        padding: 1rem 1.5rem;
+        border-radius: 999px;
+        font-weight: 700;
+        font-family: Sora, sans-serif;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      @media (max-width: 900px) { 
+        .vs-grid { grid-template-columns: 1fr; } 
+        .api-badge-float {
+          position: relative;
+          bottom: auto;
+          right: auto;
+          margin: 1rem auto 0;
+          width: max-content;
+        }
+      }
+    </style>
+  </head>
+  <body class="subpage" data-page="whatsapp-api">
+    <div class="announcement-bar">
+      <p>Meta has upgraded the Business API. Increased broadcast limits available now.</p>
+    </div>
+
+    <div data-site-header></div>
+
+    <main>
+      <section class="api-hero">
+        <div class="api-hero__inner">
+          <div class="api-hero__content reveal">
+            <div class="api-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Meta Verified Partner
+            </div>
+            <h1>The Official WhatsApp Business API.</h1>
+            <p>
+              Don't risk your brand on unapproved solutions. Connektly provides 
+              infrastructure-grade access to the official API, enabling secure, 
+              scalable, and compliant conversations at high volume.
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <a href="/contact" class="button" style="background: var(--api-brand); color: #000;">Get Official API Access</a>
+              <a href="/contact" class="button button--ghost">View API Documentation</a>
+            </div>
+          </div>
+
+          <div class="api-visual reveal reveal-delay-1">
+            <div class="code-window">
+              <div class="code-window__header">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="code-window__body">
+<pre><code><span class="kw-blue">const</span> <span class="kw-pink">axios</span> = require(<span class="kw-green">'axios'</span>);
+
+<span class="kw-blue">async function</span> sendWhatsAppTemplate(to, template) {
+  <span class="kw-blue">const</span> payload = {
+    messaging_product: <span class="kw-green">"whatsapp"</span>,
+    to: to,
+    type: <span class="kw-green">"template"</span>,
+    template: {
+      name: template,
+      language: { code: <span class="kw-green">"en_US"</span> }
+    }
+  };
+
+  <span class="kw-blue">const</span> response = <span class="kw-pink">await</span> axios.post(
+    <span class="kw-green">'https://api.connektly.in/v1/messages'</span>, 
+    payload,
+    { headers: { Authorization: <span class="kw-green">`Bearer ${API_KEY}`</span> } }
+  );
+  <span class="kw-blue">return</span> response.data;
+}</code></pre>
+              </div>
+            </div>
+            
+            <!-- Decorative floating pill -->
+            <div class="api-badge-float reveal reveal-delay-2">
+              <span style="display: block; width: 10px; height: 10px; background: #25d366; border-radius: 50%; box-shadow: 0 0 15px #25d366;"></span>
+              Real-time Delivery Sync
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="api-grid-section">
+        <div style="text-align: center; margin-bottom: 4rem;" class="reveal">
+          <span class="eyebrow">Enterprise Capabilities</span>
+          <h2 style="font-family: Sora, sans-serif; font-size: clamp(2rem, 4vw, 3rem); margin-top: 0.5rem; color: #04120b;">Why upgrade to the official API?</h2>
+        </div>
+
+        <div class="api-grid">
+          <article class="api-card reveal">
+            <div class="api-card__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <h3>Green Tick Verification</h3>
+            <p>Establish ultimate trust with your customers. The official API unlocks the ability to apply for the prestigious Green Tick badge, verifying your business instantly in the chat header.</p>
+          </article>
+
+          <article class="api-card reveal reveal-delay-1">
+            <div class="api-card__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2c7ef8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3>Interactive Messages</h3>
+            <p>Move beyond plain text. Build native WhatsApp menus with List Messages featuring up to 10 options, quick reply buttons, and rich product catalogs directly in the chat.</p>
+          </article>
+
+          <article class="api-card reveal reveal-delay-2">
+            <div class="api-card__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fdbc40" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            </div>
+            <h3>Infinite Scalability</h3>
+            <p>Graduate from limited broadcast lists. Connektly helps you systematically upgrade your Meta messaging tier, allowing you to blast 100k+ messages seamlessly.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="vs-section">
+        <div class="vs-container">
+          <div style="text-align: center;" class="reveal">
+            <span class="eyebrow">Platform Comparison</span>
+            <h2 style="font-family: Sora, sans-serif; font-size: clamp(2rem, 4vw, 3rem); margin-top: 0.5rem; color: #04120b;">Free App vs Official API</h2>
+          </div>
+          
+          <div class="vs-grid">
+            <article class="vs-card vs-card--app reveal">
+              <div class="vs-card__header">
+                <img src="/Social%20Media%20Icons/WhatsApp.svg" alt="WhatsApp" style="filter: grayscale(1) opacity(0.5);" />
+                <h3>WhatsApp Business App</h3>
+              </div>
+              <ul class="vs-list">
+                <li>
+                  <svg class="app-cross" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> 
+                  <div><strong>Limited to 1 User</strong>Small businesses only natively support a single phone interface which causes absolute bottlenecking for scaled support teams.</div>
+                </li>
+                <li>
+                  <svg class="app-cross" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> 
+                  <div><strong>Max 256 Broadcast Limit</strong>Manual list management and extreme friction to scale outbound promotional messages organically.</div>
+                </li>
+                <li>
+                  <svg class="app-cross" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> 
+                  <div><strong>High Blocking Risk</strong>Sending promotional messages unvetted via the free app often results in permanent number bans.</div>
+                </li>
+                <li>
+                  <svg class="app-cross" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> 
+                  <div><strong>No Programmability</strong>Zero CRM API integrations, and zero webhooks—meaning tools like Hubspot or Salesforce are totally blocked.</div>
+                </li>
+              </ul>
+            </article>
+
+            <article class="vs-card vs-card--api reveal reveal-delay-1">
+              <div class="vs-card__header">
+                <img src="/Social%20Media%20Icons/WhatsApp.svg" alt="WhatsApp" />
+                <h3>WhatsApp Business API</h3>
+              </div>
+              <ul class="vs-list">
+                <li>
+                  <svg class="api-check" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 
+                  <div><strong>Unlimited Agents</strong>Wire your phone number into Connektly and grant simultaneous access to your entire sales/support division.</div>
+                </li>
+                <li>
+                  <svg class="api-check" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 
+                  <div><strong>100k+ Rate Limits</strong>Official Meta scaling protocols automatically expand with your business, allowing practically infinite outreach.</div>
+                </li>
+                <li>
+                  <svg class="api-check" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 
+                  <div><strong>Zero Risk & Compliance</strong>Meta Template approvals ensure 100% policy compliance, meaning zero ban risk. Includes Green Tick verification potential.</div>
+                </li>
+                <li>
+                  <svg class="api-check" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 
+                  <div><strong>Full Code Interface</strong>Deep API integration unlocks advanced automations, chatbot processing, and global CRM synchronization perfectly.</div>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="features-cta reveal" style="background: #0a4627; border-radius: 999px; max-width: 900px; margin: 4rem auto 6rem; padding: 4rem; text-align: center; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2); transition: transform 300ms ease;">
+        <h3 style="font-family: 'Sora', sans-serif; color: #fff; font-size: 2rem; margin: 0 0 2rem;">Ready to migrate to the Official API?</h3>
+        <div style="display: flex; justify-content: center; gap: 1.5rem;">
+          <a href="/contact" class="button" style="background: #ffffff; color: #0c1a14;">Get Started Now</a>
+          <a href="/contact" class="button button--ghost" style="border-color: rgba(255,255,255,0.4);">Speak to Sales</a>
+        </div>
+      </section>
+
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="/site-layout.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>
