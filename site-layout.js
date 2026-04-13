@@ -98,6 +98,13 @@ const SITE_LAYOUTS = {
     footer: {
       copy: "&copy; 2026 Connektly. Accelerate growth with the WhatsApp Business API."
     }
+  },
+  "unified-inbox": {
+    brandHref: "/",
+    navLinks: globalNavLinks,
+    footer: {
+      copy: "&copy; 2026 Connektly. One single workspace for all your customer conversations."
+    }
   }
 };
 
@@ -184,8 +191,17 @@ function renderHeader(layout) {
         ${getLinkHtml("Pricing")}
         ${renderResourcesDropdown()}
         ${getLinkHtml("Contact Us")}
-        <a class="button button--sm nav-cta" href="https://app.connektly.in/" target="_blank" rel="noopener noreferrer">Get Started</a>
+        
+        <div class="mobile-actions">
+          <a class="nav-login" href="https://app.connektly.in/login" target="_blank" rel="noopener noreferrer">Login</a>
+          <a class="button button--sm nav-cta" href="https://app.connektly.in/signup" target="_blank" rel="noopener noreferrer">Get Started</a>
+        </div>
       </nav>
+
+      <div class="header-actions">
+        <a class="nav-login" href="https://app.connektly.in/login" target="_blank" rel="noopener noreferrer">Login</a>
+        <a class="button button--sm nav-cta" href="https://app.connektly.in/signup" target="_blank" rel="noopener noreferrer">Get Started</a>
+      </div>
     </header>
   `;
 }

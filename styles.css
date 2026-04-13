@@ -91,9 +91,9 @@ button {
   margin: 0;
   padding: 1rem 1.25rem;
   transform: translateX(-50%);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   border: 1px solid rgba(19, 54, 41, 0.1);
   border-radius: 999px;
@@ -117,6 +117,7 @@ button {
   align-items: center;
   gap: 0.85rem;
   min-width: 0;
+  justify-self: start;
 }
 
 .brand__mark {
@@ -180,6 +181,32 @@ button {
   display: flex;
   align-items: center;
   gap: 1.25rem;
+  justify-self: center;
+}
+
+.header-actions {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.header-actions .nav-login,
+.mobile-actions .nav-login {
+  color: #20333f;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.header-actions .nav-login:hover,
+.mobile-actions .nav-login:hover {
+  color: #25da7b;
+  transform: translateY(-1px);
+}
+
+.mobile-actions {
+  display: none;
 }
 
 .site-nav > a:not(.button),
@@ -1406,20 +1433,32 @@ button {
   align-items: stretch;
 }
 
-.contact__card,
+.contact__card {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: #12261f;
+}
+
 .contact-form {
   padding: 2rem;
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.82);
 }
 
+.section--bright .contact__card .eyebrow,
+.contact__card .eyebrow {
+  color: #18bf63;
+}
+
+.section--bright .contact__card h2,
 .contact__card h2 {
-  color: #09130d;
+  color: #ffffff;
   margin-top: 0.8rem;
 }
 
+.section--bright .contact__card p,
 .contact__card p {
-  color: rgba(9, 19, 13, 0.72);
+  color: #ffffff;
 }
 
 .contact__details {
@@ -1428,17 +1467,21 @@ button {
   margin: 2rem 0 0;
 }
 
+.section--bright .contact__details dt,
 .contact__details dt {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.8rem;
+  color: #18bf63;
 }
 
+.section--bright .contact__details dd,
 .contact__details dd {
   margin: 0.35rem 0 0;
   font-size: 1.05rem;
   font-weight: 700;
+  color: #ffffff;
 }
 
 .contact-form {
@@ -1805,6 +1848,27 @@ body[data-pc-state="api"] .pc-toggle__glider {
     top: calc(var(--announcement-bar-height) + var(--site-header-gap));
     padding: 0.9rem 1rem;
     border-radius: 26px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .header-actions {
+    display: none;
+  }
+
+  .mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(9, 19, 26, 0.08);
+  }
+
+  .mobile-actions .nav-login {
+    text-align: center;
+    padding: 0.5rem;
+    display: block;
   }
 
   .nav-toggle {

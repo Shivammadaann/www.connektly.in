@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?"&l="+l:"";j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5JJF6K8P');</script>
+<!-- End Google Tag Manager -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unified Inbox | Connektly Solutions</title>
+    <meta
+      name="description"
+      content="Unify WhatsApp, Instagram, Messenger, and Webchat into a single, collaborative team workspace with Connektly."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="/connektly-favicon.png" />
+    <link rel="apple-touch-icon" href="/connektly-favicon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/pages.css" />
+    <style>
+      :root {
+        --ui-brand: #3b82f6;
+        --ui-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        --ui-bg: #f0f4f8;
+      }
+      
+      .ui-hero {
+        background: #ffffff;
+        padding: 6rem 0 4rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .ui-hero::after {
+        content: "";
+        position: absolute;
+        top: -10%;
+        right: -5%;
+        width: 60%;
+        aspect-ratio: 1;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .ui-hero__inner {
+        width: min(calc(100% - 2rem), var(--max-width));
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.15fr;
+        gap: 4rem;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .ui-hero__content h1 {
+        font-family: "Sora", sans-serif;
+        font-size: clamp(2.2rem, 4vw, 3.8rem);
+        line-height: 1.05;
+        margin: 1.5rem 0;
+        letter-spacing: -0.04em;
+        color: #0b1a2a;
+      }
+
+      .ui-hero__content p {
+        font-size: 1.25rem;
+        color: #4a5c6e;
+        line-height: 1.7;
+        margin-bottom: 2.5rem;
+        max-width: 90%;
+      }
+
+      .ui-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        padding: 0.6rem 1.2rem;
+        border-radius: 999px;
+        color: var(--ui-brand);
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .ui-visual {
+        position: relative;
+      }
+
+      .inbox-mockup {
+        background: #ffffff;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: 0 40px 100px rgba(11, 26, 42, 0.1);
+        display: flex;
+        overflow: hidden;
+        height: 520px;
+      }
+
+      .inbox-mockup__sidebar {
+        width: 80px;
+        background: #0d1624;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 0;
+        gap: 1.5rem;
+      }
+
+      .mock-nav-item {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.8rem;
+        background: rgba(255, 255, 255, 0.05);
+        display: grid;
+        place-items: center;
+      }
+      
+      .mock-nav-item.active {
+        background: var(--ui-gradient);
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+      }
+
+      .inbox-mockup__list {
+        width: 260px;
+        background: #f8fafc;
+        border-right: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .mock-list-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .mock-list-header span {
+        display: block;
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #0f172a;
+      }
+
+      .mock-chat-item {
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        align-items: center;
+        position: relative;
+      }
+
+      .mock-chat-item.active {
+        background: #ffffff;
+        border-left: 3px solid var(--ui-brand);
+      }
+
+      .mock-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        display: grid;
+        place-items: center;
+        color: #64748b;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      .mock-chat-preview strong {
+        display: block;
+        font-size: 0.95rem;
+        color: #1e293b;
+        margin-bottom: 0.2rem;
+      }
+
+      .mock-chat-preview span {
+        display: block;
+        font-size: 0.8rem;
+        color: #64748b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 140px;
+      }
+
+      .platform-icon {
+        position: absolute;
+        bottom: 1rem;
+        left: 3rem;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+      }
+
+      .inbox-mockup__chat {
+        flex: 1;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .mock-chat-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .mock-chat-body {
+        flex: 1;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .mock-bubble {
+        max-width: 80%;
+        padding: 1rem 1.25rem;
+        border-radius: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .mock-bubble--received {
+        background: #f1f5f9;
+        color: #334155;
+        align-self: flex-start;
+        border-bottom-left-radius: 0.25rem;
+      }
+
+      .mock-bubble--sent {
+        background: var(--ui-gradient);
+        color: #ffffff;
+        align-self: flex-end;
+        border-bottom-right-radius: 0.25rem;
+        box-shadow: 0 10px 24px rgba(59, 130, 246, 0.2);
+      }
+
+      .ui-feature-section {
+        padding: 6rem 0;
+        background: var(--ui-bg);
+      }
+
+      .ui-grid {
+        width: min(calc(100% - 2rem), var(--max-width));
+        margin: 4rem auto 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+
+      .ui-card {
+        background: #ffffff;
+        padding: 3rem 2.5rem;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(0,0,0,0.03);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+        transition: transform 300ms ease, box-shadow 300ms ease;
+      }
+
+      .ui-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(59, 130, 246, 0.08);
+      }
+
+      .ui-card__icon {
+        width: 3.5rem;
+        height: 3.5rem;
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: 1rem;
+        display: grid;
+        place-items: center;
+        margin-bottom: 2rem;
+        color: var(--ui-brand);
+      }
+
+      .ui-card h3 {
+        font-family: "Sora", sans-serif;
+        font-size: 1.4rem;
+        color: #0f172a;
+        margin-bottom: 1rem;
+      }
+
+      .ui-card p {
+        color: #64748b;
+        line-height: 1.7;
+      }
+
+      .flow-section {
+        padding: 8rem 0;
+        background: #ffffff;
+      }
+
+      .flow-container {
+        width: min(calc(100% - 2rem), var(--max-width));
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: center;
+      }
+
+      .flow-visual {
+        background: #f8fafc;
+        border-radius: 2rem;
+        padding: 4rem;
+        position: relative;
+      }
+      
+      .connector-pulse {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(59, 130, 246, 0.1);
+        animation: pulseRing 3s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+
+      @keyframes pulseRing {
+        0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+      }
+
+      @media (max-width: 1024px) {
+        .ui-hero__inner { grid-template-columns: 1fr; }
+        .ui-grid { grid-template-columns: 1fr; }
+        .flow-container { grid-template-columns: 1fr; }
+        .inbox-mockup { height: 400px; }
+      }
+    </style>
+  </head>
+  <body class="subpage" data-page="unified-inbox">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5JJF6K8P"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <div class="announcement-bar">
+      <p>Connect WhatsApp, Messenger, and Instagram Direct in under 5 minutes.</p>
+    </div>
+
+    <div data-site-header></div>
+
+    <main>
+      <section class="ui-hero">
+        <div class="ui-hero__inner">
+          <div class="ui-hero__content reveal">
+            <div class="ui-badge">Workspace</div>
+            <h1>One Inbox for Every Customer Conversation.</h1>
+            <p>
+              Tired of switching tabs between WhatsApp, Instagram, and webchat? 
+              Connektly merges all your channels into one collaborative team inbox so your agents can close deals and resolve tickets faster.
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <a href="/contact" class="button" style="background: var(--ui-brand); box-shadow: 0 16px 36px rgba(59, 130, 246, 0.25);">Start Free Trial</a>
+              <a href="/contact" class="button button--ghost">Book a Demo</a>
+            </div>
+          </div>
+
+          <div class="ui-visual reveal reveal-delay-1">
+            <div class="inbox-mockup">
+              <!-- Sidebar -->
+              <div class="inbox-mockup__sidebar">
+                <div class="mock-nav-item active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                <div class="mock-nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+              </div>
+              
+              <!-- Chat List -->
+              <div class="inbox-mockup__list">
+                <div class="mock-list-header">
+                  <span>Mentions & assigned</span>
+                </div>
+                <div class="mock-chat-item active">
+                  <div class="mock-avatar">S</div>
+                  <div class="mock-chat-preview">
+                    <strong>Sarah Jenkins</strong>
+                    <span>I'd like to upgrade my plan.</span>
+                  </div>
+                  <img src="/Social%20Media%20Icons/WhatsApp.svg" alt="" class="platform-icon" style="background:#25d366" />
+                </div>
+                <div class="mock-chat-item">
+                  <div class="mock-avatar">R</div>
+                  <div class="mock-chat-preview">
+                    <strong>Rahul M.</strong>
+                    <span>Is the API rate limit active?</span>
+                  </div>
+                  <img src="/Social%20Media%20Icons/Instagram.png" alt="" class="platform-icon" />
+                </div>
+                <div class="mock-chat-item">
+                  <div class="mock-avatar">M</div>
+                  <div class="mock-chat-preview">
+                    <strong>Mike Zhang</strong>
+                    <span>Found an issue with billing.</span>
+                  </div>
+                  <img src="/Social%20Media%20Icons/Messenger.svg" alt="" class="platform-icon" />
+                </div>
+              </div>
+
+              <!-- Active Chat -->
+              <div class="inbox-mockup__chat">
+                <div class="mock-chat-header">
+                  <div style="font-weight: 700; color: #0f172a;">Sarah Jenkins</div>
+                  <div style="font-size: 0.8rem; padding: 0.4rem 0.8rem; background: #f1f5f9; border-radius: 999px; color: #64748b;">WhatsApp Lead</div>
+                </div>
+                <div class="mock-chat-body">
+                  <div class="mock-bubble mock-bubble--received">
+                    Hi team! I've been testing the Starter plan and I absolutely love the workflow. 
+                  </div>
+                  <div class="mock-bubble mock-bubble--received">
+                    I'd like to upgrade my plan to Growth for our support team.
+                  </div>
+                  <div class="mock-bubble mock-bubble--sent">
+                    Hey Sarah! That's fantastic news. I can definitely help you get set up on the Growth tier seamlessly.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ui-feature-section">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto;" class="reveal">
+          <span class="eyebrow" style="color: var(--ui-brand);">Platform Features</span>
+          <h2 style="font-family: Sora, sans-serif; font-size: clamp(2rem, 4vw, 3rem); margin-top: 0.5rem; color: #0f172a; line-height: 1.1;">
+            Stop fighting your tools. Start flowing.
+          </h2>
+        </div>
+
+        <div class="ui-grid">
+          <article class="ui-card reveal">
+            <div class="ui-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <h3>Collaborative Triaging</h3>
+            <p>Multiple team members can draft replies, leave internal notes, and tag conversations inside the same inbox without the customer ever knowing.</p>
+          </article>
+
+          <article class="ui-card reveal reveal-delay-1">
+            <div class="ui-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            </div>
+            <h3>Intelligent Auto-Routing</h3>
+            <p>Automatically assign leads based on shift availability, language preferences, or VIP status. Never let a high-intent conversation slip through the cracks.</p>
+          </article>
+
+          <article class="ui-card reveal reveal-delay-2">
+            <div class="ui-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            </div>
+            <h3>Performance Analytics</h3>
+            <p>Measure resolution times, agent performance, and channel volume from a unified dashboard. Bring hard data into your customer support strategy.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="flow-section">
+        <div class="flow-container">
+          <div class="flow-copy reveal">
+            <span class="eyebrow" style="color: var(--ui-brand);">Shared Context</span>
+            <h2 style="font-family: Sora, sans-serif; font-size: 2.6rem; color: #0b1a2a; margin: 1rem 0 1.5rem; line-height: 1.1;">Full context on every single lead.</h2>
+            <p style="color: #4a5c6e; font-size: 1.15rem; line-height: 1.6; margin-bottom: 2rem;">
+              When a customer messages you on Instagram and follows up on WhatsApp three days later, Connektly merges the thread. 
+              Your agents instantly see purchase history, past complaints, and loyalty status synced directly from your CRM.
+            </p>
+            <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem;">
+              <li style="display: flex; gap: 1rem; color: #0f172a; font-weight: 600;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ui-brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> No more duplicate tickets.</li>
+              <li style="display: flex; gap: 1rem; color: #0f172a; font-weight: 600;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ui-brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Stop asking customers to repeat themselves.</li>
+              <li style="display: flex; gap: 1rem; color: #0f172a; font-weight: 600;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ui-brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Higher CSAT scores out of the box.</li>
+            </ul>
+          </div>
+          
+          <div class="flow-visual reveal reveal-delay-1">
+            <div class="connector-pulse"></div>
+            <div style="background: #fff; padding: 2rem; border-radius: 1rem; box-shadow: 0 20px 40px rgba(0,0,0,0.05); position: relative; z-index: 2; border: 1px solid rgba(0,0,0,0.05);">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <div style="width: 48px; height: 48px; border-radius: 50%; background: #e2e8f0; display: grid; place-items: center; font-weight: 700; color: #64748b;">JD</div>
+                  <div>
+                    <strong style="display: block; font-size: 1.1rem; color: #0f172a;">Jane Doe</strong>
+                    <span style="color: #64748b; font-size: 0.9rem;">High-Intent Lead</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display: grid; gap: 1rem;">
+                <div style="display: flex; gap: 1rem; font-size: 0.95rem; color: #334155;">
+                   <img src="/Social%20Media%20Icons/WhatsApp.svg" style="width: 20px;" alt=""/> Initial Outreach
+                </div>
+                <div style="display: flex; gap: 1rem; font-size: 0.95rem; color: #334155;">
+                   <img src="/Social%20Media%20Icons/Instagram.png" style="width: 20px;" alt=""/> Replied via Ad
+                </div>
+                <div style="display: flex; gap: 1rem; font-size: 0.95rem; color: #334155;">
+                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg> 
+                   CRM Synced
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features-cta reveal" style="background: var(--ui-gradient); border-radius: 999px; max-width: 900px; margin: 4rem auto 6rem; padding: 4rem; text-align: center; box-shadow: 0 30px 80px rgba(59, 130, 246, 0.3); transition: transform 300ms ease;">
+        <h3 style="font-family: 'Sora', sans-serif; color: #fff; font-size: 2rem; margin: 0 0 2rem;">Empower your team with a Unified Inbox.</h3>
+        <div style="display: flex; justify-content: center; gap: 1.5rem;">
+          <a href="/contact" class="button" style="background: #ffffff; color: var(--ui-brand);">Start Free Trial</a>
+          <a href="/contact" class="button button--ghost" style="border-color: rgba(255,255,255,0.4); color: #fff;">Book a Demo</a>
+        </div>
+      </section>
+    </main>
+
+    <div data-site-footer></div>
+
+    <script src="/site-layout.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>
