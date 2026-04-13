@@ -1,5 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const fs = require("fs");
+const crypto = require("crypto");
+const axios = require("axios");
 const path = require("path");
 const cors = require("cors");
 const multer = require("multer");
@@ -221,6 +224,52 @@ app.delete("/api/help/:id", (req, res) => {
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'index.html'));
 // });
+
+// Utility: Hash user data for Meta CAPI
+function hashData(value) {
+  if (!value) return null;
+  return crypto.createHash("sha256").update(value.trim().toLowerCase()).digest("hex");
+}
+
+// POST endpoint for Meta Conversions API (Purchase Event)
+app.post("/api/track/purchase", async (req, res) => {
+  const { email, phone, currency, value } = req.body;
+  const PIXEL_ID = process.env.META_PIXEL_ID || "2008094803443395";
+  const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;
+
+  if (!ACCESS_TOKEN) {
+    console.error("Missing META_ACCESS_TOKEN in env variables.");
+    return res.status(500).json({ error: "Server Configuration Error" });
+  }
+
+  const payload = {
+    data: [
+      {
+        event_name: "Purchase",
+        event_time: Math.floor(Date.now() / 1000),
+        action_source: "website",
+        user_data: {
+          em: [hashData(email)],
+          ph: [hashData(phone)]
+        },
+        custom_data: {
+          currency: currency || "USD",
+          value: value ? value.toString() : "0.00"
+        }
+      }
+    ]
+  };
+
+  try {
+    const response = await axios.post(`https://graph.facebook.com/v20.0/${PIXEL_ID}/events`, payload, {
+      params: { access_token: ACCESS_TOKEN }
+    });
+    res.json({ success: true, message: "Purchase event sent to Meta CAPI", fbTrace: response.data });
+  } catch (err) {
+    console.error("Error sending CAPI event:", err.response ? err.response.data : err.message);
+    res.status(500).json({ error: "Failed to transmit event to Meta" });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Connektly local server running on http://localhost:${PORT}`);
