@@ -128,7 +128,7 @@ function renderBrand(href) {
   return `
     <a class="brand" href="${href}" aria-label="Connektly home">
       <span class="brand__mark brand__mark--image">
-        <img src="/connektly-favicon.png" alt="" />
+        <img src="/Logo.svg" alt="" />
       </span>
       <span class="brand__text">
         <strong>Connektly</strong>
