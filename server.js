@@ -8,7 +8,7 @@ const cors = require("cors");
 const multer = require("multer");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const DATA_FILE = path.join(__dirname, "data", "blogs.json");
 const HELP_DATA_FILE = path.join(__dirname, "data", "help.json");
 
