@@ -282,7 +282,10 @@ function setCurrentPageLink() {
 }
 
 function renderPricingCycle(cycle) {
-  if (!pricingCycleButtons.length || !pricingAmountNodes.length) {
+  const amountNodes = document.querySelectorAll("[data-price-annual][data-price-monthly]");
+  const billingNodes = document.querySelectorAll("[data-billing-annual][data-billing-monthly]");
+
+  if (!pricingCycleButtons.length || !amountNodes.length) {
     return;
   }
 
@@ -294,11 +297,11 @@ function renderPricingCycle(cycle) {
     button.setAttribute("aria-pressed", String(isCurrent));
   });
 
-  pricingAmountNodes.forEach((node) => {
+  amountNodes.forEach((node) => {
     node.innerHTML = `&#8377;${node.dataset[`price${cycle === "annual" ? "Annual" : "Monthly"}`]}<span>/month</span>`;
   });
 
-  pricingBillingNodes.forEach((node) => {
+  billingNodes.forEach((node) => {
     node.textContent = node.dataset[`billing${cycle === "annual" ? "Annual" : "Monthly"}`] || "";
   });
 
@@ -307,6 +310,102 @@ function renderPricingCycle(cycle) {
       cycle === "annual"
         ? "Up to 25% off and free dedicated onboarding with annual subscription"
         : "Switch to monthly for flexibility with no annual commitment";
+  }
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatPlanPrice(value) {
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) {
+    return "0";
+  }
+
+  return new Intl.NumberFormat("en-IN", {
+    maximumFractionDigits: 0
+  }).format(Math.max(Math.round(amount), 0));
+}
+
+function renderDynamicPricingPlans(plans) {
+  const container = document.querySelector("[data-dynamic-pricing-plans]");
+  if (!container || !Array.isArray(plans) || plans.length === 0) {
+    return;
+  }
+
+  const styles = ["growth", "pro", "business"];
+  container.innerHTML = plans
+    .map((plan, index) => {
+      const name = escapeHtml(plan.name || "Plan");
+      const features = Array.isArray(plan.features) ? plan.features.filter(Boolean) : [];
+      const monthlyPrice = formatPlanPrice(plan.monthlyPrice);
+      const annualMonthlyPrice = formatPlanPrice(plan.annualPrice ? Number(plan.annualPrice) / 12 : plan.monthlyPrice);
+      const lede = escapeHtml(features[0] || `Flexible messaging plan for ${name}.`);
+      const meta = [
+        plan.credits ? `${formatPlanPrice(plan.credits)} credits included` : "Managed from Connektly Admin",
+        "WhatsApp message charges billed separately",
+        "Changes stay synced globally"
+      ];
+      const detailFeatures = features.length ? features : ["Shared inbox and CRM-ready workspace", "Campaign and support operations", "Centralized billing management"];
+      const styleName = styles[index % styles.length];
+
+      return `
+        <article class="pricing-plan pricing-plan--${styleName}${plan.isRecommended ? " pricing-plan--featured" : ""} reveal is-visible">
+          ${plan.isRecommended ? '<div class="pricing-plan__badge">Best Value</div>' : ""}
+          <header class="pricing-plan__header">
+            <div>
+              <p class="pricing-plan__name">${name}</p>
+              <p class="pricing-plan__lede">${lede}</p>
+            </div>
+          </header>
+
+          <div class="pricing-plan__price">
+            <strong data-price-annual="${annualMonthlyPrice}" data-price-monthly="${monthlyPrice}">&#8377;${annualMonthlyPrice}<span>/month</span></strong>
+            <small data-billing-annual="billed annually" data-billing-monthly="billed monthly">billed annually</small>
+          </div>
+
+          <ul class="pricing-plan__meta">
+            ${meta.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+
+          <a class="pricing-plan__action" href="#contact">Select Plan</a>
+
+          <div class="pricing-plan__details">
+            <h2>Key features</h2>
+            <ul>
+              ${detailFeatures.map((feature) => `<li>${escapeHtml(feature)}</li>`).join("")}
+            </ul>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  renderPricingCycle(activePricingCycle);
+}
+
+async function loadCentralizedPricingPlans() {
+  const container = document.querySelector("[data-dynamic-pricing-plans]");
+  if (!container) {
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/pricing-plans", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Pricing API failed with ${response.status}`);
+    }
+
+    const payload = await response.json();
+    renderDynamicPricingPlans(payload.plans);
+  } catch (error) {
+    console.warn("Using static pricing cards because centralized pricing failed.", error);
   }
 }
 
@@ -585,4 +684,5 @@ renderSolution(activeSolution);
 startAutoRotate();
 updateFaqVisibility(activeFaqFilter);
 renderPricingCycle(activePricingCycle);
+loadCentralizedPricingPlans();
 initPlatformSwitcher();

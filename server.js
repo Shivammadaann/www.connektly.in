@@ -5,12 +5,13 @@ const crypto = require("crypto");
 const axios = require("axios");
 const path = require("path");
 const cors = require("cors");
-const multer = require("multer");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const DATA_FILE = path.join(__dirname, "data", "blogs.json");
 const HELP_DATA_FILE = path.join(__dirname, "data", "help.json");
+const CENTRAL_ADMIN_URL = (process.env.CENTRAL_ADMIN_URL || "https://www.admin.connektly.in").replace(/\/$/, "");
+const ADMIN_PUBLIC_API_BASE_URL = (process.env.ADMIN_PUBLIC_API_BASE_URL || `${CENTRAL_ADMIN_URL}/api/public`).replace(/\/$/, "");
 
 // Middleware
 app.use(cors());
@@ -18,26 +19,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Setup explicit static directories to allow easy file fetching
+app.use((req, res, next) => {
+  const normalizedPath = req.path.replace(/\/+$/, "") || "/";
+  if (normalizedPath === "/admin" || normalizedPath.startsWith("/admin/")) {
+    res.redirect(302, CENTRAL_ADMIN_URL);
+    return;
+  }
+  next();
+});
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(__dirname));
-
-// Ensure upload config exists
-const uploadDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
-// Set up Multer Storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
-const upload = multer({ storage: storage });
 
 // Utility function to read and write JSON data safely
 function getBlogs() {
@@ -47,14 +39,6 @@ function getBlogs() {
   } catch (err) {
     console.error("Error reading blogs.json", err);
     return [];
-  }
-}
-
-function saveBlogs(blogs) {
-  try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(blogs, null, 2), "utf8");
-  } catch (err) {
-    console.error("Error writing blogs.json", err);
   }
 }
 
@@ -68,12 +52,10 @@ function getHelp() {
   }
 }
 
-function saveHelp(articles) {
-  try {
-    fs.writeFileSync(HELP_DATA_FILE, JSON.stringify(articles, null, 2), "utf8");
-  } catch (err) {
-    console.error("Error writing help.json", err);
-  }
+function legacyAdminDisabled(req, res) {
+  res.status(410).json({
+    error: "Website content writes have moved to the centralized Connektly Admin Control Centre."
+  });
 }
 
 // REST API for Blogs
@@ -95,68 +77,11 @@ app.get("/api/blogs/:id", (req, res) => {
   }
 });
 
-// POST to Upload Image directly
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-  // TinyMCE natively expects a JSON response structured like { location: 'url' }
-  const url = `/uploads/${req.file.filename}`;
-  res.json({ location: url });
-});
-
-// POST a new blog
-app.post("/api/blogs", (req, res) => {
-  const blogs = getBlogs();
-  const newBlog = {
-    id: Date.now().toString(),
-    title: req.body.title || "Untitled",
-    author: req.body.author || "Anonymous",
-    excerpt: req.body.excerpt || "",
-    content: req.body.content || "",
-    coverImage: req.body.coverImage || "",
-    date: new Date().toISOString()
-  };
-  
-  blogs.push(newBlog);
-  saveBlogs(blogs);
-  
-  res.status(201).json(newBlog);
-});
-
-// PUT (update) an existing blog
-app.put("/api/blogs/:id", (req, res) => {
-  const blogs = getBlogs();
-  const index = blogs.findIndex(b => b.id === req.params.id);
-  
-  if (index !== -1) {
-    blogs[index] = {
-      ...blogs[index],
-      title: req.body.title || blogs[index].title,
-      author: req.body.author || blogs[index].author,
-      excerpt: req.body.excerpt || blogs[index].excerpt,
-      content: req.body.content || blogs[index].content,
-      coverImage: req.body.coverImage !== undefined ? req.body.coverImage : blogs[index].coverImage,
-      // Date can be preserved or updated depending on preference. Preserving it here.
-    };
-    saveBlogs(blogs);
-    res.json(blogs[index]);
-  } else {
-    res.status(404).json({ error: "Blog not found" });
-  }
-});
-
-// DELETE a blog
-app.delete("/api/blogs/:id", (req, res) => {
-  let blogs = getBlogs();
-  const initialLength = blogs.length;
-  blogs = blogs.filter(b => b.id !== req.params.id);
-  
-  if (blogs.length < initialLength) {
-    saveBlogs(blogs);
-    res.json({ success: true, message: "Blog deleted successfully" });
-  } else {
-    res.status(404).json({ error: "Blog not found" });
-  }
-});
+// Legacy website admin write APIs are disabled. Public reads remain available above.
+app.post("/api/upload", legacyAdminDisabled);
+app.post("/api/blogs", legacyAdminDisabled);
+app.put("/api/blogs/:id", legacyAdminDisabled);
+app.delete("/api/blogs/:id", legacyAdminDisabled);
 
 
 // REST API for Help Articles
@@ -172,51 +97,24 @@ app.get("/api/help/:id", (req, res) => {
   else res.status(404).json({ error: "Article not found" });
 });
 
-app.post("/api/help", (req, res) => {
-  const articles = getHelp();
-  const newArticle = {
-    id: 'help-' + Date.now().toString(),
-    title: req.body.title || "Untitled",
-    author: req.body.author || "Support Team",
-    category: req.body.category || "General",
-    excerpt: req.body.excerpt || "",
-    content: req.body.content || "",
-    date: new Date().toISOString()
-  };
-  articles.push(newArticle);
-  saveHelp(articles);
-  res.status(201).json(newArticle);
-});
+app.post("/api/help", legacyAdminDisabled);
+app.put("/api/help/:id", legacyAdminDisabled);
+app.delete("/api/help/:id", legacyAdminDisabled);
 
-app.put("/api/help/:id", (req, res) => {
-  const articles = getHelp();
-  const index = articles.findIndex(a => a.id === req.params.id);
-  if (index !== -1) {
-    articles[index] = {
-      ...articles[index],
-      title: req.body.title || articles[index].title,
-      author: req.body.author || articles[index].author,
-      category: req.body.category || articles[index].category,
-      excerpt: req.body.excerpt || articles[index].excerpt,
-      content: req.body.content || articles[index].content
-    };
-    saveHelp(articles);
-    res.json(articles[index]);
-  } else {
-    res.status(404).json({ error: "Article not found" });
-  }
-});
+app.get("/api/pricing-plans", async (req, res) => {
+  try {
+    const response = await fetch(`${ADMIN_PUBLIC_API_BASE_URL}/pricing-plans`);
+    const payload = await response.json();
 
-app.delete("/api/help/:id", (req, res) => {
-  let articles = getHelp();
-  const initialLength = articles.length;
-  articles = articles.filter(a => a.id !== req.params.id);
-  
-  if (articles.length < initialLength) {
-    saveHelp(articles);
-    res.json({ success: true });
-  } else {
-    res.status(404).json({ error: "Article not found" });
+    if (!response.ok) {
+      throw new Error(payload.error || `Admin pricing API failed with ${response.status}`);
+    }
+
+    res.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300");
+    res.json(payload);
+  } catch (err) {
+    console.error("Error fetching centralized pricing plans:", err.message);
+    res.status(502).json({ error: "Centralized pricing plans are unavailable." });
   }
 });
 
