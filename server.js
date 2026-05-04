@@ -10,6 +10,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const DATA_FILE = path.join(__dirname, "data", "blogs.json");
 const HELP_DATA_FILE = path.join(__dirname, "data", "help.json");
+const LEAD_FORM_DATA_FILE = process.env.LEAD_FORM_DATA_FILE
+  ? path.resolve(__dirname, process.env.LEAD_FORM_DATA_FILE)
+  : path.join(__dirname, "data", "lead-form-submissions.json");
 const CENTRAL_ADMIN_URL = (process.env.CENTRAL_ADMIN_URL || "https://www.admin.connektly.in").replace(/\/$/, "");
 const ADMIN_PUBLIC_API_BASE_URL = (process.env.ADMIN_PUBLIC_API_BASE_URL || `${CENTRAL_ADMIN_URL}/api/public`).replace(/\/$/, "");
 
@@ -50,6 +53,83 @@ function getHelp() {
     console.error("Error reading help.json", err);
     return [];
   }
+}
+
+function getLeadFormSubmissions() {
+  try {
+    const data = fs.readFileSync(LEAD_FORM_DATA_FILE, "utf8");
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    if (err && err.code === "ENOENT") {
+      return [];
+    }
+    console.error("Error reading lead-form-submissions.json", err);
+    return [];
+  }
+}
+
+function saveLeadFormSubmissions(submissions) {
+  fs.mkdirSync(path.dirname(LEAD_FORM_DATA_FILE), { recursive: true });
+  const tempPath = `${LEAD_FORM_DATA_FILE}.${process.pid}.${Date.now()}.tmp`;
+  fs.writeFileSync(tempPath, `${JSON.stringify(submissions, null, 2)}\n`, "utf8");
+  fs.renameSync(tempPath, LEAD_FORM_DATA_FILE);
+}
+
+function normalizeSubmissionType(value, sourcePath) {
+  const normalized = String(value || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+  if (["booked_demo", "demo", "demo_booking", "book_demo"].includes(normalized)) {
+    return "booked_demo";
+  }
+  if (String(sourcePath || "").toLowerCase().includes("book-demo")) {
+    return "booked_demo";
+  }
+  return "lead_inquiry";
+}
+
+function sanitizeLeadValue(value) {
+  if (Array.isArray(value)) {
+    return value.map(sanitizeLeadValue).filter((entry) => entry !== "");
+  }
+  if (value === null || value === undefined) {
+    return "";
+  }
+  return String(value).trim().slice(0, 5000);
+}
+
+function sanitizeLeadText(value) {
+  if (Array.isArray(value)) {
+    return sanitizeLeadText(value[0]);
+  }
+  return sanitizeLeadValue(value);
+}
+
+function normalizeLeadFields(fields) {
+  if (!fields || typeof fields !== "object" || Array.isArray(fields)) {
+    return {};
+  }
+
+  return Object.entries(fields).reduce((normalized, [key, value]) => {
+    const fieldName = String(key || "").trim().slice(0, 80);
+    if (!fieldName) {
+      return normalized;
+    }
+    normalized[fieldName] = sanitizeLeadValue(value);
+    return normalized;
+  }, {});
+}
+
+function firstLeadField(fields, names) {
+  for (const name of names) {
+    const value = fields[name];
+    if (Array.isArray(value)) {
+      const first = value.find(Boolean);
+      if (first) return String(first);
+    } else if (value) {
+      return String(value);
+    }
+  }
+  return "";
 }
 
 function legacyAdminDisabled(req, res) {
@@ -100,6 +180,48 @@ app.get("/api/help/:id", (req, res) => {
 app.post("/api/help", legacyAdminDisabled);
 app.put("/api/help/:id", legacyAdminDisabled);
 app.delete("/api/help/:id", legacyAdminDisabled);
+
+app.post("/api/form-submissions", (req, res) => {
+  try {
+    const fields = normalizeLeadFields(req.body && req.body.fields);
+    const sourcePath = sanitizeLeadText(req.body && req.body.sourcePath) || "/";
+    const type = normalizeSubmissionType(req.body && (req.body.type || req.body.formType), sourcePath);
+    const now = new Date().toISOString();
+    const firstName = firstLeadField(fields, ["name", "firstName", "first_name"]);
+    const lastName = firstLeadField(fields, ["lastName", "last_name"]);
+    const submission = {
+      id: `${Date.now()}-${crypto.randomBytes(4).toString("hex")}`,
+      type,
+      submittedAt: now,
+      sourcePath,
+      sourceUrl: sanitizeLeadText(req.body && req.body.sourceUrl),
+      pageTitle: sanitizeLeadText(req.body && req.body.pageTitle),
+      formId: sanitizeLeadText(req.body && req.body.formId),
+      userAgent: sanitizeLeadText(req.get("user-agent")),
+      name: [firstName, lastName].filter(Boolean).join(" ") || firstName || firstLeadField(fields, ["fullName", "full_name"]),
+      email: firstLeadField(fields, ["email", "workEmail", "workingEmail"]),
+      phone: firstLeadField(fields, ["phone", "whatsapp", "whatsappNumber"]),
+      company: firstLeadField(fields, ["company", "organization", "business"]),
+      topic: firstLeadField(fields, ["topic", "team"]),
+      message: firstLeadField(fields, ["message", "notes", "description"]),
+      fields
+    };
+
+    const submissions = getLeadFormSubmissions();
+    submissions.unshift(submission);
+    saveLeadFormSubmissions(submissions.slice(0, 5000));
+
+    res.status(201).json({
+      ok: true,
+      id: submission.id,
+      type: submission.type,
+      redirectTo: submission.type === "booked_demo" ? "/demo-book-thank-you/" : "/thank-you/"
+    });
+  } catch (err) {
+    console.error("Error saving website form submission:", err);
+    res.status(500).json({ error: "Unable to save form submission." });
+  }
+});
 
 app.get("/api/pricing-plans", async (req, res) => {
   try {

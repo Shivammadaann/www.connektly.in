@@ -109,8 +109,7 @@ const stageMetaNode = document.getElementById("stage-meta");
 const chatStackNode = document.getElementById("chat-stack");
 const stageNode = document.getElementById("solution-stage");
 const accordionItems = document.querySelectorAll(".accordion__item");
-const form = document.getElementById("contact-form");
-const formStatus = document.getElementById("form-status");
+const forms = document.querySelectorAll("form");
 const revealNodes = document.querySelectorAll(".reveal");
 const sectionNodes = document.querySelectorAll("main section[id]");
 const tocLinks = document.querySelectorAll("[data-toc-link]");
@@ -409,6 +408,108 @@ async function loadCentralizedPricingPlans() {
   }
 }
 
+function setField(fields, name, value) {
+  if (!name) {
+    return;
+  }
+
+  const normalizedValue = value instanceof File ? value.name : String(value || "").trim();
+  if (Object.prototype.hasOwnProperty.call(fields, name)) {
+    fields[name] = Array.isArray(fields[name])
+      ? [...fields[name], normalizedValue]
+      : [fields[name], normalizedValue];
+    return;
+  }
+
+  fields[name] = normalizedValue;
+}
+
+function readFormFields(formNode) {
+  const data = new FormData(formNode);
+  const fields = {};
+
+  data.forEach((value, key) => {
+    setField(fields, key, value);
+  });
+
+  formNode.querySelectorAll('input[type="checkbox"][name]').forEach((input) => {
+    if (!input.checked && !Object.prototype.hasOwnProperty.call(fields, input.name)) {
+      setField(fields, input.name, "false");
+    }
+  });
+
+  return fields;
+}
+
+function inferFormType(formNode, fields) {
+  const explicitType = formNode.dataset.formType || fields.formType || fields.type;
+  if (explicitType) {
+    return String(explicitType);
+  }
+
+  const path = normalizePathname(window.location.pathname);
+  const submitText = formNode.querySelector('[type="submit"]')?.textContent || "";
+  if (path.includes("book-demo") || /schedule\s+demo|book\s+demo/i.test(submitText)) {
+    return "booked_demo";
+  }
+
+  return "lead_inquiry";
+}
+
+function getFormStatusNode(formNode) {
+  return formNode.querySelector(".contact-form__status") || document.getElementById("form-status");
+}
+
+function getRedirectPath(type) {
+  return type === "booked_demo" ? "/demo-book-thank-you/" : "/thank-you/";
+}
+
+async function submitWebsiteForm(formNode) {
+  const fields = readFormFields(formNode);
+  const type = inferFormType(formNode, fields);
+  const statusNode = getFormStatusNode(formNode);
+  const submitButton = formNode.querySelector('[type="submit"]');
+
+  if (statusNode) {
+    statusNode.textContent = "Submitting...";
+  }
+  if (submitButton) {
+    submitButton.disabled = true;
+  }
+
+  try {
+    const response = await fetch("/api/form-submissions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        type,
+        fields,
+        sourcePath: normalizePathname(window.location.pathname),
+        sourceUrl: window.location.href,
+        pageTitle: document.title,
+        formId: formNode.id || ""
+      })
+    });
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(payload.error || "Unable to submit the form.");
+    }
+
+    window.location.assign(payload.redirectTo || getRedirectPath(type));
+  } catch (error) {
+    if (statusNode) {
+      statusNode.textContent =
+        error instanceof Error ? error.message : "Unable to submit right now. Please try again.";
+    }
+    if (submitButton) {
+      submitButton.disabled = false;
+    }
+  }
+}
+
 function setActiveSectionLink() {
   if (!sectionNodes.length) {
     return;
@@ -606,13 +707,11 @@ faqToggles.forEach((toggle) => {
   });
 });
 
-form?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const data = new FormData(form);
-  const name = data.get("name");
-
-  formStatus.textContent = `Thanks${name ? `, ${name}` : ""}. Our team will reach out within one business day.`;
-  form.reset();
+forms.forEach((formNode) => {
+  formNode.addEventListener("submit", (event) => {
+    event.preventDefault();
+    void submitWebsiteForm(formNode);
+  });
 });
 
 if ("IntersectionObserver" in window && revealNodes.length) {
