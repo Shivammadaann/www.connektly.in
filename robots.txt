@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /auth/
 
-Sitemap: https://www.connektly.in/sitemap.xml
+Sitemap: https://connektly.in/sitemap.xml
